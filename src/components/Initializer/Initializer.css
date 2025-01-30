@@ -1,0 +1,7 @@
+.loader-exit-active {
+  z-index: -1;
+  transition-duration: 400ms;
+  opacity: 0;
+}
+
+/*# sourceMappingURL=Initializer.css.map */

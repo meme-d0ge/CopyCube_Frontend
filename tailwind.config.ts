@@ -1,17 +1,32 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{ts,js,tsx}"],
+
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        lightGray: '#d1d1d1',
       },
+      fontWeight:{
+        b: '700',
+        sb: '600',
+        m: '500',
+        r: '400',
+        l: '300'
+      },
+      fontSize:{
+        h1: '64px',
+        h2: '48px',
+        h3: '40px',
+        h4: '36px',
+        h5: '32px',
+        h6: '28px',
+        h7: '20px',
+        h8: '18px',
+        h9: '16px',
+        h10: '14px',
+      }
     },
   },
   plugins: [],

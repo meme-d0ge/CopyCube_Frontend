@@ -1,5 +1,7 @@
 'use client'
 import {create} from "zustand/react";
+import {refreshApi, RefreshResponse} from "@/api/auth/refresh-api";
+import {getProfileApi, GetProfileResponse} from "@/api/profile/get-profile-api";
 
 export interface User {
     id: number;
@@ -37,11 +39,12 @@ export interface StoreState {
 
 
     initialized: boolean;
+    timeInitialized: number;
     initialize: () => Promise<void>;
 }
 
 export const userStore = create<StoreState>()(
-    (set, get) => ({
+    (set) => ({
         user: null,
         loadingUser: false,
         errorUser: null,
@@ -55,7 +58,37 @@ export const userStore = create<StoreState>()(
         errorToken: null,
 
         initialized: false,
+        timeInitialized: 0,
         initialize: async () => {
-
+            const timeStart = Date.now()
+            set({
+                loadingProfile: true,
+                loadingToken: true,
+            })
+            const token = await refreshApi()
+            if (token.code === 200) {
+                const newToken = token as RefreshResponse
+                const profile = await getProfileApi({
+                    token: newToken.token.token,
+                })
+                if (profile.code === 200) {
+                    const newProfile = profile as GetProfileResponse;
+                    set({
+                        token: newToken.token,
+                        profile: newProfile.profile,
+                    })
+                } else {
+                    set({
+                        token: newToken.token,
+                    })
+                }
+            }
+            const timeEnd = Date.now()
+            set({
+                initialized: true,
+                timeInitialized: (timeEnd - timeStart),
+                loadingProfile: false,
+                loadingToken: false,
+            })
         }
     }));
