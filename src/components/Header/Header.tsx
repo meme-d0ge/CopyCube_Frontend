@@ -14,7 +14,7 @@ export default function Header() {
                     <AuthMenu/>
                 </div>
             </header>
-            <div className={'px-[25px] h-[70px] w-[100%]'}></div>
+            <div className={'px-[25px] h-[80px] w-[100%]'}></div>
         </div>
     )
 }

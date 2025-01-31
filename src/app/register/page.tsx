@@ -5,6 +5,7 @@ import MatteButton from "@/UI/Buttons/MatteButton/MatteButton";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {ApiError} from "@/api/apiUtils";
 import {registerApi} from "@/api/user/register-user-api";
+import {useRouter} from "next/navigation";
 
 interface RegistrationData {
     displayName: string;
@@ -15,6 +16,7 @@ const RegisterPage = () => {
     const {register, handleSubmit, setError, formState:{ errors }} = useForm<RegistrationData>({
         mode: 'onBlur',
     })
+    const router = useRouter()
     const [success, setSuccess] = useState(false)
     const onSubmit:SubmitHandler<RegistrationData> = async (data) => {
         const response = await registerApi({
@@ -24,6 +26,9 @@ const RegisterPage = () => {
         })
         if (response.code === 201) {
             setSuccess(true)
+            setTimeout(() => {
+                router.push('/login')
+            }, 1000)
         } else if (response.code === 400) {
             const responseError = response as ApiError
             setSuccess(false)

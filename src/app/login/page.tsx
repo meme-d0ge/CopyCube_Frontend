@@ -6,6 +6,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {loginApi} from "@/api/auth/login-api";
 import {ApiError} from "@/api/apiUtils";
 import {userStore} from "@/store/userStore";
+import {useRouter} from "next/navigation";
 interface LoginData {
     username: string;
     password: string;
@@ -14,6 +15,7 @@ export default function LoginPage() {
     const {register, handleSubmit, setError, formState:{ errors }} = useForm<LoginData>({mode:'onTouched'})
     const {initialize} = userStore(state => state);
     const [success, setSuccess] = useState(false)
+    const router = useRouter()
     const onSubmit:SubmitHandler<LoginData> = async (data) => {
         const response = await loginApi({
             username: data.username,
@@ -22,6 +24,9 @@ export default function LoginPage() {
         if (response.code === 201) {
             setSuccess(true)
             initialize()
+            setTimeout(() => {
+                router.push('/profile')
+            }, 1000)
         } else if (response.code === 400) {
             const responseError = response as ApiError
             setSuccess(false)
