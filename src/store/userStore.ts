@@ -14,8 +14,8 @@ export interface Profile {
     displayName: string;
     description: string;
     avatar: string;
-    createDate: string;
-    updateDate: string;
+    CreateDate: string;
+    UpdateDate: string;
 }
 export interface Token {
     token: string,
