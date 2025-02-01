@@ -16,8 +16,8 @@ const ListItems = ({items, className}:ListItemsProps) => {
                 items.map((item) => {
                     return (
                         <li className={'contents'} key={item.key}>
-                            <span className={'mt-[10px] sm:mt-[0] bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-t-[20px]  sm:rounded-l-[20px] sm:rounded-r-[0]'}>{item.keyData}</span>
-                            <span className={'bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0]'}>{item.valueData}</span>
+                            <span className={'break-all mt-[10px] sm:mt-[0] bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-t-[20px]  sm:rounded-l-[20px] sm:rounded-r-[0]'}>{item.keyData}</span>
+                            <span className={'break-all bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0]'}>{item.valueData}</span>
                         </li>
                     );
                 })
