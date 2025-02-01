@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
-import styles from './MatteButton.module.css';
-const Button = (props: any) => {
+import styles from './BlueMatteButton.module.css';
+const BlueMatteButton = (props: any) => {
     const {children, className, ...any} = props;
     return (
         <button className={`${styles.button} ${className}`} {...any}>
@@ -9,4 +9,4 @@ const Button = (props: any) => {
         </button>
     );
 }
-export default Button;
+export default BlueMatteButton;
