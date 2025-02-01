@@ -7,9 +7,9 @@ import {ApiEndpoint} from "@/api/api";
 
 export interface PatchProfileRequest {
     token: string;
-    avatar: File;
-    displayName: string;
-    description: string;
+    avatar: File | null;
+    displayName: string | null;
+    description: string | null;
 }
 export interface PatchProfileResponse {
     code: number;
@@ -19,9 +19,15 @@ export interface PatchProfileResponse {
 export const patchProfileApi = async (request: PatchProfileRequest): Promise<PatchProfileResponse | ApiError> => {
     try {
         const formData = new FormData();
-        formData.append("avatar", request.avatar);
-        formData.append("displayName", request.displayName);
-        formData.append("description", request.description);
+        if (request.avatar){
+            formData.append("avatar", request.avatar);
+        }
+        if (request.displayName) {
+            formData.append("displayName", request.displayName);
+        }
+        if (request.description) {
+            formData.append("description", request.description);
+        }
 
         const response: AxiosResponse = await instance.patch(`${ApiEndpoint.Profile}`, formData, {
             headers: {
