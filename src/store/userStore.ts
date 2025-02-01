@@ -1,7 +1,7 @@
 'use client'
 import {create} from "zustand/react";
-import {refreshApi, RefreshResponse} from "@/api/auth/refresh-api";
 import {getProfileApi, GetProfileResponse} from "@/api/profile/get-profile-api";
+import {refreshApi, RefreshResponse} from "@/api/auth/refresh-api";
 
 export interface User {
     id: number;
@@ -23,21 +23,39 @@ export interface Token {
     exp: number
 }
 
+export interface setProfile{
+    loadingProfile?: boolean;
+    errorProfile?: string;
+    profile?: Profile;
+}
+export interface setToken{
+    loadingToken?: boolean;
+    errorToken?: string;
+    token?: Token;
+}
+export interface setUser{
+    loadingUser?: boolean;
+    errorUser?: string;
+    user?: User;
+}
+
 export interface StoreState {
     user: User | null;
     loadingUser: boolean;
     errorUser: string | null;
+    setUser: (profile: setUser) => void;
 
     profile: Profile | null;
     loadingProfile: boolean;
     errorProfile: string | null;
-
+    setProfile: (profile: setProfile) => void;
 
     token: Token | null;
     loadingToken: boolean;
     errorToken: string | null;
+    setToken: (token: setToken) => void;
 
-
+    clearAll: () => void
     initialized: boolean;
     timeInitialized: number;
     initialize: () => Promise<void>;
@@ -48,47 +66,59 @@ export const userStore = create<StoreState>()(
         user: null,
         loadingUser: false,
         errorUser: null,
-
+        setUser: (user: setUser) => set({
+            ...user
+        }),
+////
         profile: null,
         loadingProfile: false,
         errorProfile: null,
-
+        setProfile: (profile) => set({
+            ...profile
+        }),
+////
         token: null,
         loadingToken: false,
         errorToken: null,
-
+        setToken: (token) => set({
+            ...token
+        }),
+////
+        clearAll: () => {
+            set({
+                user: null,
+                profile: null,
+                token: null,
+            })
+        },
         initialized: false,
         timeInitialized: 0,
         initialize: async () => {
             const timeStart = Date.now()
-            set({
-                loadingProfile: true,
-                loadingToken: true,
-            })
-            const token = await refreshApi()
-            if (token.code === 200) {
-                const newToken = token as RefreshResponse
-                const profile = await getProfileApi({
-                    token: newToken.token.token,
+
+            const responseRefresh = await refreshApi()
+            if (responseRefresh.code === 200) {
+                set({loadingProfile: true});
+                const token = responseRefresh as RefreshResponse
+                set({
+                    token: token.token,
                 })
-                if (profile.code === 200) {
-                    const newProfile = profile as GetProfileResponse;
+                const response = await getProfileApi({
+                    token: token.token.token,
+                })
+                if (response.code === 200) {
+                    const profile = response as GetProfileResponse;
                     set({
-                        token: newToken.token,
-                        profile: newProfile.profile,
-                    })
-                } else {
-                    set({
-                        token: newToken.token,
+                        profile: profile.profile
                     })
                 }
+                set({loadingProfile: false});
             }
+
             const timeEnd = Date.now()
             set({
                 initialized: true,
                 timeInitialized: (timeEnd - timeStart),
-                loadingProfile: false,
-                loadingToken: false,
             })
         }
     }));
