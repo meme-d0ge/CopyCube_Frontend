@@ -1,11 +1,11 @@
 'use client'
 import React, {useState} from 'react';
 import TextInput from "@/UI/Inputs/TextInput/TextInput";
-import MatteButton from "@/UI/Buttons/MatteButton/MatteButton";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {ApiError} from "@/api/apiUtils";
 import {registerApi} from "@/api/user/register-user-api";
 import {useRouter} from "next/navigation";
+import BlueMatteButton from "@/UI/Buttons/BlueMatteButton/BlueMatteButton";
 
 interface RegistrationData {
     displayName: string;
@@ -64,7 +64,7 @@ const RegisterPage = () => {
                 <TextInput {...register("displayName", {required: 'Display name field is required'})} type={'text'} nameField={'Display name'}/>
                 <TextInput {...register("username", {required: 'Username is required'})} type={'text'} nameField={'Userame'}/>
                 <TextInput {...register("password", {required: 'Password field is required'})} type={'password'} nameField={'Password'}/>
-                <MatteButton type='submit' className={'mt-[10px] w-[150px]'}>Registry</MatteButton>
+                <BlueMatteButton type='submit' className={'mt-[10px] w-[150px]'}>Registry</BlueMatteButton>
             </form>
         </main>
     );
