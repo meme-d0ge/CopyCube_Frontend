@@ -5,7 +5,6 @@ export interface ApiError{
     message: string;
 }
 export const getErrorMessage = (error: unknown): ApiError => {
-    console.log(error);
     if (axios.isAxiosError(error)) {
         return {
             code: error.status || 500,
