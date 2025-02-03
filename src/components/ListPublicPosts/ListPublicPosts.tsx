@@ -1,9 +1,8 @@
 'use client'
 import React, {useEffect, useRef, useState} from 'react';
 import {Post} from "@/api/post/types/Post";
-import {GetPostsResponse} from "@/api/post/get-posts-user-api";
 import Link from "next/link";
-import {getPublicPostsApi} from "@/api/post/get-public-posts";
+import {getPublicPostsApi, GetPublicPostsResponse} from "@/api/post/get-public-posts";
 import Image from "next/image";
 
 const ListPublicPosts = ({limit = 10}) => {
@@ -21,7 +20,7 @@ const ListPublicPosts = ({limit = 10}) => {
                 page: page,
             })
             if (response.code === 200) {
-                const newPosts = response as GetPostsResponse
+                const newPosts = response as GetPublicPostsResponse
                 setPosts([
                     ...posts,
                     ...newPosts.posts.posts,
