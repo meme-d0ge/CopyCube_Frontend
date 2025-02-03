@@ -21,7 +21,7 @@ export const createPostApi = async (request: CreatePostRequest): Promise<CreateP
         const response: AxiosResponse = await instance.post(`${ApiEndpoint.Post}`,
             {
                 title: request.title,
-                body: request.title,
+                body: request.body,
                 type: request.type,
             }, headers
         );

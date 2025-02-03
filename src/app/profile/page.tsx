@@ -14,6 +14,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {ApiError} from "@/api/apiUtils";
 import {patchProfileApi} from "@/api/profile/patch-profile-api";
 import {getProfileApi, GetProfileResponse} from "@/api/profile/get-profile-api";
+import ListPosts from "@/components/ListPosts/ListPosts";
 
 interface UpdateProfileData {
     displayName: string;
@@ -23,7 +24,6 @@ interface UpdateProfileData {
 const ProfilePage = () => {
     const {profile, loadingProfile, setProfile, initialized, clearAll} = userStore(state => state);
     const {token} = userStore(state => state);
-
 
     const {register, handleSubmit} = useForm<UpdateProfileData>({mode:'onSubmit'})
     const router = useRouter()
@@ -36,6 +36,8 @@ const ProfilePage = () => {
 
     const [modeEditor, setModeEditor] = useState(false)
     const [fileUrl, setFileUrl] = useState('');
+
+    const [openList, setOpenList] = useState(false)
 
     const Exit = async ()=>{
         const response = await logoutApi()
@@ -70,6 +72,7 @@ const ProfilePage = () => {
     const onSubmit:SubmitHandler<UpdateProfileData> = async (data) => {
         setEditError('')
         setEditSuccess('')
+        console.log(data)
         if (token){
             const response = await patchProfileApi({
                 token: token.token,
@@ -119,18 +122,27 @@ const ProfilePage = () => {
             )
         } else if (profile) {
             return (
-                <main className={'bg-neutral-900'}>
+                <main className={'bg-neutral-900'} >
                     <div className={'px-[20px] md:px-[40px] xl:px-[80px] max-w-[1920px] mx-auto'}>
-                        <div className={'bg-neutral-800 px-[10px] py-[35px] md:px-[20px] rounded-[30px] min-h-[680px] flex flex-col text-h7 font-m text-white gap-[15px] max-w-[700px] w-full mx-auto mt-[5px]'}>
+                        <div
+                            className={'bg-neutral-800 px-[10px] py-[35px] md:px-[20px] rounded-[30px] min-h-[680px] flex flex-col text-h7 font-m text-white gap-[15px] max-w-[700px] w-full mx-auto mt-[5px]'}>
                             <div className={'mx-auto relative'}>
-                                <label htmlFor="avatar-input" className={`${modeEditor ? "after:text-h8 after:bg-neutral-950 after:top-0 after:bottom-0 after:left-0 after:right-0 after:opacity-0 after:absolute after:z-10 after:rounded-[50%] after:content-['upload'] after:text-center after:flex after:flex-col after:justify-center after:hover:text-h6 after:font-m after:hover:opacity-70 after:duration-700" : ''}`}></label>
-                                <Image priority className={`rounded-[50%] border-[2px] relative border-neutral-950 w-[150px] h-[150px] sm:w-[225px] sm:h-[225px]`} width={225} height={225} src={modeEditor ? (fileUrl ? fileUrl : (profile?.avatar ? profile.avatar : String(process.env.NEXT_PUBLIC_DEFAULT_AVATAR))) : (profile?.avatar ? profile.avatar : String(process.env.NEXT_PUBLIC_DEFAULT_AVATAR))} alt={'user-avatar'}/>
+                                <label htmlFor="avatar-input"
+                                       className={`${modeEditor ? "after:text-h8 after:bg-neutral-950 after:top-0 after:bottom-0 after:left-0 after:right-0 after:opacity-0 after:absolute after:z-10 after:rounded-[50%] after:content-['upload'] after:text-center after:flex after:flex-col after:justify-center after:hover:text-h6 after:font-m after:hover:opacity-70 after:duration-700" : ''}`}></label>
+                                <Image priority
+                                       className={`rounded-[50%] border-[2px] relative border-neutral-950 w-[150px] h-[150px] sm:w-[225px] sm:h-[225px]`}
+                                       width={225} height={225}
+                                       src={modeEditor ? (fileUrl ? fileUrl : (profile?.avatar ? profile.avatar : String(process.env.NEXT_PUBLIC_DEFAULT_AVATAR))) : (profile?.avatar ? profile.avatar : String(process.env.NEXT_PUBLIC_DEFAULT_AVATAR))}
+                                       alt={'user-avatar'}/>
                             </div>
                             {modeEditor ?
-                                <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-[10px] items-center w-full'}>
-                                    <input {...register("avatar")} onChange={handleFileChange} id={'avatar-input'} className={'absolute w-0 h-0'} type="file"/>
+                                <form onSubmit={handleSubmit(onSubmit)}
+                                      className={'flex flex-col gap-[10px] items-center w-full'}>
+                                    <input {...register("avatar")} onChange={handleFileChange} id={'avatar-input'}
+                                           className={'absolute w-0 h-0'} type="file"/>
                                     <TextInput {...register("displayName")} defaultValue={profile.displayName} classNameDiv={'max-w-[400px] w-full'} className={'w-full'} nameField={'Display name'}></TextInput>
                                     <TextArea {...register("description")} defaultValue={profile.description} classNameDiv={'max-w-[400px] w-full'} className={'w-full'} nameField={'Description'}></TextArea>
+
                                     <span className={`duration-700 font-m ${editSuccess ? 'text-green-600' : editError ? 'text-red-600' : ''}`}>{editSuccess ? editSuccess : editError ? editError : ''}</span>
                                     <div className={'flex justify-around mt-[20px] w-full gap-[10px]'}>
                                         <BlueMatteButton className={'w-[110px] h-[45px]'} onClick={toggleEditorMode}>← Back</BlueMatteButton>
@@ -138,7 +150,7 @@ const ProfilePage = () => {
                                     </div>
                                 </form> :
                                 <>
-                                    <ListItems className={'md:text-h7 text-h9'} items={[
+                                    <ListItems className={'text-h9'} items={[
                                         {
                                             key: '1',
                                             keyData: 'Display name:',
@@ -167,11 +179,19 @@ const ProfilePage = () => {
                                     ]}></ListItems>
                                     <div className={'flex justify-between mt-[20px] px-[30px]'}>
                                         <BlueMatteButton className={'w-[110px] h-[45px]'} onClick={toggleEditorMode}>Change</BlueMatteButton>
-                                        <span className={`duration-700 font-m ${exitSuccess ? 'text-green-600' : exitError ? 'text-red-600': ''}`}>{exitSuccess ? exitSuccess : exitError ? exitError: ''}</span>
+                                        <span className={`duration-700 font-m ${exitSuccess ? 'text-green-600' : exitError ? 'text-red-600' : ''}`}>{exitSuccess ? exitSuccess : exitError ? exitError : ''}</span>
                                         <ExitButton onClick={Exit} className={'text-h10'}>Logout</ExitButton>
                                     </div>
                                 </>
                             }
+                            <button onClick={() => {
+                                setOpenList(!openList)
+                            }} className={`text-lightGray hover:text-white text-[20px] cursor-pointer mx-auto relative after:absolute after:top-[25px] after:right-[50%] after:left-[50%] p-[7.5px] pb-[12.5px] ${openList ? "after:content-['↑']" : "after:content-['↓']"}`}>My
+                                posts
+                            </button>
+
+
+                            {openList ? <ListPosts></ListPosts> : <></>}
                         </div>
                     </div>
                 </main>

@@ -20,7 +20,7 @@ export const Initializer = () => {
     return (
         <>
             <CSSTransition nodeRef={nodeRef} in={frozen} timeout={{exit: 400}} unmountOnExit={true} classNames="loader">
-                <div className={'absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-neutral-900 z-10'} ref={nodeRef}>
+                <div className={'absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-neutral-900 z-50'} ref={nodeRef}>
                     <Cube/>
                 </div>
             </CSSTransition>

@@ -2,6 +2,7 @@ import {ProfileUser} from "@/api/profile/types/ProfileUser";
 
 export interface Post {
     key: string,
+    title: string,
     body: string,
     type: TypePost,
     profile: ProfileUser | null,
@@ -10,12 +11,12 @@ export interface Post {
 }
 export interface PostWithoutProfile {
     key: string,
+    title: string,
     body: string,
     type: TypePost,
     created: string,
     updated: string,
 }
-
 export interface PublicPosts {
     total: number,
     page: number,

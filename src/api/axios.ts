@@ -8,11 +8,11 @@ export const instance = axios.create({
 });
 instance.interceptors.response.use(
     async (response) => {
-        console.log(response)
+        // console.log(response)
         return Promise.resolve(response);
     },
     async (error) => {
-        console.log(error);
+        // console.log(error);
         const originalRequest = error.config;
         const userState = userStore.getState
 

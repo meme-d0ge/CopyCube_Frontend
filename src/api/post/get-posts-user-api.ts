@@ -5,16 +5,16 @@ import {instance} from "@/api/axios";
 import {PostsUser} from "@/api/post/types/Post";
 import {ApiEndpoint} from "@/api/api";
 
-export interface GetPublicPostsRequest {
+export interface GetPostsRequest {
     token: string,
     limit: number;
     page: number;
 }
-export interface GetPublicPostsResponse {
+export interface GetPostsResponse {
     code: number;
     posts: PostsUser;
 }
-export const getPostsUserApi = async (request: GetPublicPostsRequest): Promise<GetPublicPostsResponse | ApiError> => {
+export const getPostsUserApi = async (request: GetPostsRequest): Promise<GetPostsResponse | ApiError> => {
     try {
         const response: AxiosResponse = await instance.get(`${ApiEndpoint.UserPosts}`, {
             params: {
