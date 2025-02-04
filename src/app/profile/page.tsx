@@ -154,27 +154,58 @@ const ProfilePage = () => {
                                         {
                                             key: '1',
                                             keyData: 'Display name:',
+                                            keyCustom: {
+                                                className: 'break-all mt-[10px] sm:mt-[0] bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-t-[20px]  sm:rounded-l-[20px] sm:rounded-r-[0]'
+                                            },
+
                                             valueData: profile.displayName,
+                                            valueCustom: {
+                                                className: 'break-all bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0]'
+                                            },
                                         },
                                         {
                                             key: '2',
                                             keyData: 'Username:',
+                                            keyCustom: {
+                                                className: 'break-all mt-[10px] sm:mt-[0] bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-t-[20px]  sm:rounded-l-[20px] sm:rounded-r-[0]'
+                                            },
                                             valueData: profile.username,
+                                            valueCustom: {
+                                                className: 'break-all bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0]'
+                                            },
                                         },
                                         {
                                             key: '3',
                                             keyData: 'Description:',
+                                            keyCustom: {
+                                                className: 'break-all mt-[10px] sm:mt-[0] bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-t-[20px]  sm:rounded-l-[20px] sm:rounded-r-[0]'
+                                            },
                                             valueData: profile.description ? profile.description : 'the author is very lazy and didn\'t leave a descriptio',
+                                            valueCustom: {
+                                                className: 'break-all bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0]'
+                                            },
                                         },
                                         {
                                             key: '4',
                                             keyData: 'Create Date:',
+                                            keyCustom: {
+                                                className: 'break-all mt-[10px] sm:mt-[0] bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-t-[20px]  sm:rounded-l-[20px] sm:rounded-r-[0]'
+                                            },
                                             valueData: profile.CreateDate,
+                                            valueCustom: {
+                                                className: 'break-all bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0]'
+                                            },
                                         },
                                         {
                                             key: '5',
                                             keyData: 'Update Date:',
+                                            keyCustom: {
+                                                className: 'break-all mt-[10px] sm:mt-[0] bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-t-[20px]  sm:rounded-l-[20px] sm:rounded-r-[0]'
+                                            },
                                             valueData: profile.UpdateDate,
+                                            valueCustom: {
+                                                className: 'break-all bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0]'
+                                            },
                                         }
                                     ]}></ListItems>
                                     <div className={'flex justify-between mt-[20px] px-[30px]'}>
@@ -189,8 +220,6 @@ const ProfilePage = () => {
                             }} className={`text-lightGray hover:text-white text-[20px] cursor-pointer mx-auto relative after:absolute after:top-[25px] after:right-[50%] after:left-[50%] p-[7.5px] pb-[12.5px] ${openList ? "after:content-['↑']" : "after:content-['↓']"}`}>My
                                 posts
                             </button>
-
-
                             {openList ? <ListPosts></ListPosts> : <></>}
                         </div>
                     </div>
