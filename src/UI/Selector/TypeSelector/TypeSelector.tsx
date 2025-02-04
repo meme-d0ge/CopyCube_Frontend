@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './TypeSelector.module.css';
 interface disabledOptions {
     public: boolean;
@@ -14,7 +14,10 @@ interface TypeSelectorProps{
     selectOption: 'public' | 'private' | 'link' | 'none';
 }
 const TypeSelector = ({disabledOptions, selectOption, register, name }: TypeSelectorProps) => {
-    const [select, setSelect] = useState(selectOption);
+    const [select, setSelect] = useState('none');
+    useEffect(() => {
+        setSelect(selectOption);
+    }, []);
     return (
         <div className={`${styles['radio-inputs']}`}>
             <label className={styles["radio"]}>
