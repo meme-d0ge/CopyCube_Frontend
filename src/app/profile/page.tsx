@@ -35,6 +35,7 @@ const ProfilePage = () => {
     const [editError, setEditError] = useState('')
 
     const [modeEditor, setModeEditor] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [fileUrl, setFileUrl] = useState('');
 
     const [openList, setOpenList] = useState(false)
@@ -73,7 +74,8 @@ const ProfilePage = () => {
         setEditError('')
         setEditSuccess('')
         console.log(data)
-        if (token){
+        if (token && !isLoading){
+            setIsLoading(true)
             const response = await patchProfileApi({
                 token: token.token,
                 avatar: data.avatar.item(0),
@@ -91,6 +93,7 @@ const ProfilePage = () => {
                     setTimeout(toggleEditorMode, 1000)
                 }
             }
+            setIsLoading(false)
         }
     }
 
@@ -143,10 +146,10 @@ const ProfilePage = () => {
                                     <TextInput {...register("displayName")} defaultValue={profile.displayName} classNameDiv={'max-w-[400px] w-full'} className={'w-full'} nameField={'Display name'}></TextInput>
                                     <TextArea {...register("description")} defaultValue={profile.description} classNameDiv={'max-w-[400px] w-full'} className={'w-full'} nameField={'Description'}></TextArea>
 
-                                    <span className={`duration-700 font-m ${editSuccess ? 'text-green-600' : editError ? 'text-red-600' : ''}`}>{editSuccess ? editSuccess : editError ? editError : ''}</span>
+                                    <span className={`duration-700 h-[40px] font-m ${editSuccess ? 'text-green-600' : editError ? 'text-red-600' : isLoading? 'text-yellow-400' : ''}`}>{editSuccess ? editSuccess : editError ? editError : isLoading? 'Loading...' : ''}</span>
                                     <div className={'flex justify-around mt-[20px] w-full gap-[10px]'}>
-                                        <BlueMatteButton className={'w-[110px] h-[45px]'} onClick={toggleEditorMode}>← Back</BlueMatteButton>
-                                        <GreenMatteButton type={'submit'} className={'w-[110px] h-[45px]'}>Change</GreenMatteButton>
+                                        <BlueMatteButton className={'max-w-max'} onClick={toggleEditorMode}>← Back</BlueMatteButton>
+                                        <GreenMatteButton type={'submit'} className={'max-w-max h-[45px]'}>Change</GreenMatteButton>
                                     </div>
                                 </form> :
                                 <>
@@ -209,8 +212,8 @@ const ProfilePage = () => {
                                         }
                                     ]}></ListItems>
                                     <div className={'flex justify-between mt-[20px] px-[30px]'}>
-                                        <BlueMatteButton className={'w-[110px] h-[45px]'} onClick={toggleEditorMode}>Change</BlueMatteButton>
-                                        <span className={`duration-700 font-m ${exitSuccess ? 'text-green-600' : exitError ? 'text-red-600' : ''}`}>{exitSuccess ? exitSuccess : exitError ? exitError : ''}</span>
+                                        <BlueMatteButton className={'max-w-max'} onClick={toggleEditorMode}>Change</BlueMatteButton>
+                                        <span className={`duration-700 h-[40px] font-m ${exitSuccess ? 'text-green-600' : exitError ? 'text-red-600' : ''}`}>{exitSuccess ? exitSuccess : exitError ? exitError : ''}</span>
                                         <ExitButton onClick={Exit} className={'text-h10'}>Logout</ExitButton>
                                     </div>
                                 </>

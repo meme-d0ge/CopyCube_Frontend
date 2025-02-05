@@ -13,7 +13,7 @@ import {patchPostApi, PatchPostResponse} from "@/api/post/patch-post-api";
 const Page = () => {
     const userState = userStore(state => state)
     const pathname = usePathname().split('/post/');
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, setError, formState:{ errors } } = useForm();
 
     interface PatchPosts{
         body: string,
@@ -21,7 +21,6 @@ const Page = () => {
     }
     const {token} = userStore(state => state)
     const [success, setSuccess] = useState('')
-    const [error, setError] = useState('')
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const onSubmit:SubmitHandler<PatchPosts> = async (data) => {
@@ -38,15 +37,22 @@ const Page = () => {
                 setSuccess('Updated successfully')
                 router.push(`/post/${responsePost.post.key}`)
             } else {
-                setError('Error updating post')
+                setError('title', {
+                    type: 'text',
+                    message: 'Error updating post',
+                })
             }
             setIsLoading(false)
         }
     }
 
+
+    const [errorStatus, setErrorStatus] = useState()
     const [post, setPost] = useState<Post>()
     const [loading, setLoading] = useState(true)
     const [isOwner, setIsOwner] = useState(false)
+
+    const [firstStart, setFirstStart] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -63,15 +69,18 @@ const Page = () => {
                 setLoading(false)
             } else if (response.code === 404) {
                 console.log(response)
-                setError('Post Not Found')
+                setErrorStatus(404)
+
                 setLoading(false)
             } else if (response.code === 403) {
-                setError('Forbidden')
+                setErrorStatus(403)
                 setLoading(false)
             }
         }
-        if (userState.initialized){
+        console.log(userState.initialized)
+        if (userState.initialized && !firstStart){
             fetchData()
+            setFirstStart(true)
         }
     }, [userState.initialized]);
     useEffect(() => {
@@ -85,15 +94,15 @@ const Page = () => {
                 <span>Loading Post...</span>
             </div>
         );
-    } else if (post && !error) {
+    } else if (post && !status) {
         return (
             <main className={'bg-neutral-900'}>
                 <div className={'px-[20px] md:px-[40px] xl:px-[80px] max-w-[1920px] mx-auto'}>
                     <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-[20px] text-white mx-auto p-[35px] pt-[45px] bg-neutral-800 rounded-[10px]'}>
                         <TextArea disabled={true} className={'w-full'} defaultValue={post.title} nameField={'Title:'}></TextArea>
-                        <TextArea {...register("body")} disabled={!isOwner} className={'min-h-[200px] w-full'} defaultValue={post.body} nameField={'Body:'}></TextArea>
+                        <TextArea {...register("body", {required:'Body field is required'})} disabled={!isOwner} className={'min-h-[200px] w-full'} defaultValue={post.body} nameField={'Body:'}></TextArea>
 
-                        <TypeSelector register={register} name={'type'} disabledOptions={{
+                        <TypeSelector register={register} name={'type'} required={'Type field is required'} disabledOptions={{
                             public: !isOwner,
                             private: !isOwner,
                             link: !isOwner
@@ -102,19 +111,31 @@ const Page = () => {
 
                         {isOwner && (
                             <>
-                                <span className={`text-h7 mx-auto font-m ${success ? 'text-green-600' : error ? 'text-red-600' : isLoading ? 'text-yellow-400' : ''}`}>{success ? success : error ? error : isLoading ? 'Loading...' : ''}</span>
-                                <GreenMatteButton type={'submit'} className={'mt-[20px] w-[200px] !py-[15px] mx-auto bg-neutral-950'}>Update Post</GreenMatteButton>
+                                <span className={`text-h7 mx-auto font-m duration-500 h-[30px] ${success ? 'text-green-600' : errors.title || errors.body || errors.type ? 'text-red-600' : isLoading ? 'text-yellow-400 opacity-100' : ''}`}>
+                                    {errors.body ? String(errors.body?.message) : errors.type ? String(errors.type?.message) : success ? 'Success update Post' : isLoading ? '' : ''}
+                                </span>
+                                <GreenMatteButton type={'submit'}
+                                                  className={'mt-[20px] w-[200px] !py-[15px] mx-auto bg-neutral-950'}>Update
+                                    Post</GreenMatteButton>
                             </>
                         )}
                     </form>
                 </div>
             </main>
-        );} else {
+        );
+    } else if (errorStatus === 404) {
         return (
-            <div className={'text-white'}>
-                <p>{error}</p>
+            <div className={'sm:text-h3 text-h5 w-full text-center'}>
+                <p className={'text-red-600 font-b'}>Post not Found</p>
             </div>
-        )}
- };
+        )
+    } else if (errorStatus === 403) {
+        return (
+            <div className={'sm:text-h3 text-h5 w-full text-center'}>
+                <p className={'text-red-600 font-b'}>Forbidden</p>
+            </div>
+        )
+    }
+};
 
-    export default Page;
+export default Page;

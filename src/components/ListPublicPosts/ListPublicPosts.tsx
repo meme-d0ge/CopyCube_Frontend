@@ -52,7 +52,7 @@ const ListPublicPosts = ({limit = 10}) => {
     }, [countPosts, page, posts]);
     return (
         <>
-            <ListItems items={[
+            <ListItems classNameItem={'text-white hover:text-lightGray'} items={[
                 ...(posts.map((post: Post) => {
                     return (
                         {
@@ -106,7 +106,6 @@ const ListPublicPosts = ({limit = 10}) => {
                     );
                 }))
             ]}/>
-            );
             {isLoading && <p>Loading more posts...</p>}
             <div className={`mx-auto text-h6 ${posts.length > 0 ? '' : 'mt-[10px]'}`}
                  ref={observerRef}>{posts.length > 0 ? '' : 'No have Post'}</div>

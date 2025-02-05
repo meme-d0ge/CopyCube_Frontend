@@ -78,7 +78,7 @@ const ListPosts = ({username, limit = 10}: ListPostsProps) => {
 
     return (
         <ul className={`flex flex-col text-h9 gap-y-[5px] text-white`}>
-            <ListItems className={'!grid-cols-[auto, 100px]'} items={[
+            <ListItems classNameItem={'text-white hover:text-lightGray'} items={[
                 ...(posts.map((post: PostWithoutProfile, index: number) => {
                         return ({
                             key: post.key,
