@@ -62,7 +62,7 @@ const ListPublicPosts = ({limit = 10}) => {
                                     event.stopPropagation()
                                     router.push(`/profile/${post.profile?.username}`)
                                 }}
-                                     className={'bg-neutral-950 px-[10px] py-[5px] rounded-[10px] hover:opacity-75 max-w-[250px] flex flex-row items-center gap-x-[10px]'}>
+                                     className={'bg-neutral-950 px-[10px] py-[5px] rounded-[10px] hover:opacity-75 sm:max-w-[250px] flex flex-row items-center gap-x-[10px]'}>
                                     <Image priority className={`rounded-[50%]`} width={50} height={50}
                                            src={post?.profile?.avatar ? post.profile.avatar : String(process.env.NEXT_PUBLIC_DEFAULT_AVATAR)}
                                            alt={'avatar-owner'}
@@ -70,7 +70,7 @@ const ListPublicPosts = ({limit = 10}) => {
                                     <span className={'break-all'}>{post.profile.displayName}</span>
                                 </div> : post.profile?.deleted ?
                                     <div
-                                        className={'bg-neutral-950 px-[10px] py-[5px] rounded-[10px] max-w-[250px] flex flex-row items-center gap-x-[10px]'}>
+                                        className={'bg-neutral-950 px-[10px] py-[5px] rounded-[10px] sm:max-w-[250px] flex flex-row items-center gap-x-[10px]'}>
                                         <Image priority
                                                className={`rounded-[50%] border-[2px] relative border-neutral-950 grayscale`}
                                                width={50} height={50}
@@ -79,7 +79,7 @@ const ListPublicPosts = ({limit = 10}) => {
                                         <span className={'line-through break-all'}>{post.profile.displayName}</span>
                                     </div> :
                                     <div
-                                        className={'bg-neutral-950 px-[10px] py-[5px] rounded-[10px] max-w-[250px] flex flex-row items-center gap-x-[10px]'}>
+                                        className={'bg-neutral-950 px-[10px] py-[5px] rounded-[10px] sm:max-w-[250px] flex flex-row items-center gap-x-[10px]'}>
                                         <Image priority
                                                className={`rounded-[50%] border-[2px] relative border-neutral-950`}
                                                width={50} height={50}
@@ -97,7 +97,7 @@ const ListPublicPosts = ({limit = 10}) => {
 
                             valueData: <span className={'break-all'}>{post.title}</span>,
                             valueCustom: {
-                                className: 'break-all bg-neutral-900 py-[7.5px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0] cursor-pointer  flex flex-row justify-center items-center',
+                                className: 'break-all bg-neutral-900 sm:py-[7.5px] py-[15px] pl-[15px] pr-[10px] rounded-b-[20px] sm:rounded-r-[20px] sm:rounded-l-[0] cursor-pointer  flex flex-row justify-center items-center',
                                 onClick: () => {
                                     router.push(`/post/${post.key}`)
                                 }
