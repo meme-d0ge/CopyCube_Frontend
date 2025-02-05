@@ -7,6 +7,7 @@ import {ProfileUser} from "@/api/profile/types/ProfileUser";
 import ListItems from "@/components/ListItems/ListItems";
 import Image from "next/image";
 import ListPosts from "@/components/ListPosts/ListPosts";
+import FireflyLoader from "@/UI/Loaders/FireflyLoader/FireflyLoader";
 const Page = () => {
     const userState = userStore(state => state)
     const pathname = usePathname().split('/profile/');
@@ -33,8 +34,10 @@ const Page = () => {
     }, [userState.initialized]);
     if (loading) {
         return (
-            <div className={'text-white'}>
-                <span>Loading Post...</span>
+            <div
+                className={'text-white absolute top-0 bottom-0 left-0 right-0 h-screen flex flex-col justify-center items-center gap-y-[30px]'}>
+                <FireflyLoader></FireflyLoader>
+                <span className={'text-yellow-400 font-b'}>Loading Profile...</span>
             </div>
         );
     } else if (profile && !error) {

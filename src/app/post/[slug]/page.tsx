@@ -10,6 +10,7 @@ import TextArea from "@/UI/Inputs/TextArea/TextArea";
 import TypeSelector from "@/UI/Selector/TypeSelector/TypeSelector";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {patchPostApi, PatchPostResponse} from "@/api/post/patch-post-api";
+import FireflyLoader from "@/UI/Loaders/FireflyLoader/FireflyLoader";
 const Page = () => {
     const userState = userStore(state => state)
     const pathname = usePathname().split('/post/');
@@ -90,11 +91,12 @@ const Page = () => {
     }, [post]);
     if (loading) {
         return (
-            <div className={'text-white'}>
-                <span>Loading Post...</span>
+            <div className={'text-white absolute top-0 bottom-0 left-0 right-0 h-screen flex flex-col justify-center items-center gap-y-[30px]'}>
+                <FireflyLoader></FireflyLoader>
+                <span className={'text-yellow-400 font-b'}>Loading...</span>
             </div>
         );
-    } else if (post && !status) {
+    } else if (post) {
         return (
             <main className={'bg-neutral-900'}>
                 <div className={'px-[20px] md:px-[40px] xl:px-[80px] max-w-[1920px] mx-auto'}>
@@ -125,13 +127,13 @@ const Page = () => {
         );
     } else if (errorStatus === 404) {
         return (
-            <div className={'sm:text-h3 text-h5 w-full text-center'}>
+            <div className={'sm:text-h3 text-h5 text-white absolute top-0 bottom-0 left-0 right-0 h-screen flex flex-col justify-center items-center'}>
                 <p className={'text-red-600 font-b'}>Post not Found</p>
             </div>
         )
     } else if (errorStatus === 403) {
         return (
-            <div className={'sm:text-h3 text-h5 w-full text-center'}>
+            <div className={'sm:text-h3 text-h5 text-white absolute top-0 bottom-0 left-0 right-0 h-screen flex flex-col justify-center items-center'}>
                 <p className={'text-red-600 font-b'}>Forbidden</p>
             </div>
         )
