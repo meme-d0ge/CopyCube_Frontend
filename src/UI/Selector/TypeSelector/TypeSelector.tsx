@@ -6,14 +6,14 @@ interface disabledOptions {
     private: boolean;
     link: boolean;
 }
-
 interface TypeSelectorProps{
     disabledOptions: disabledOptions;
     register: any,
     name: string,
+    required: string,
     selectOption: 'public' | 'private' | 'link' | 'none';
 }
-const TypeSelector = ({disabledOptions, selectOption, register, name }: TypeSelectorProps) => {
+const TypeSelector = ({disabledOptions, selectOption, register, name, required }: TypeSelectorProps) => {
     const [select, setSelect] = useState('none');
     useEffect(() => {
         setSelect(selectOption);
@@ -23,7 +23,7 @@ const TypeSelector = ({disabledOptions, selectOption, register, name }: TypeSele
             <label className={styles["radio"]}>
                 <input
                     type="radio"
-                    {...register(name)}
+                    {...register(name, {required: required})}
                     value="public"
                     disabled={disabledOptions.public}
                     checked={select === 'public'}
@@ -34,7 +34,7 @@ const TypeSelector = ({disabledOptions, selectOption, register, name }: TypeSele
             <label className={styles["radio"]}>
                 <input
                     type="radio"
-                    {...register(name)}
+                    {...register(name, {required: required})}
                     value="private"
                     disabled={disabledOptions.private}
                     checked={select === 'private'}
@@ -45,7 +45,7 @@ const TypeSelector = ({disabledOptions, selectOption, register, name }: TypeSele
             <label className={styles["radio"]}>
                 <input
                     type="radio"
-                    {...register(name)}
+                    {...register(name, {required: required})}
                     value="link"
                     disabled={disabledOptions.link}
                     checked={select === 'link'}
