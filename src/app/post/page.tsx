@@ -15,7 +15,7 @@ const Page = () => {
         type: TypePost,
     }
     const {token, profile} = userStore(state => state)
-    const { register, handleSubmit, setError, formState:{ errors } } = useForm();
+    const { register, handleSubmit, setError, formState:{ errors } } = useForm<CreatePost>();
     const [isLoading, setIsLoading] = useState(false)
     const [success, setSuccess] = useState('')
     const router = useRouter()

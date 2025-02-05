@@ -14,7 +14,7 @@ import FireflyLoader from "@/UI/Loaders/FireflyLoader/FireflyLoader";
 const Page = () => {
     const userState = userStore(state => state)
     const pathname = usePathname().split('/post/');
-    const { register, handleSubmit, setError, formState:{ errors } } = useForm();
+    const { register, handleSubmit, setError, formState:{ errors } } = useForm<PatchPosts>();
 
     interface PatchPosts{
         body: string,
@@ -38,7 +38,7 @@ const Page = () => {
                 setSuccess('Updated successfully')
                 router.push(`/post/${responsePost.post.key}`)
             } else {
-                setError('title', {
+                setError('body', {
                     type: 'text',
                     message: 'Error updating post',
                 })
@@ -48,12 +48,10 @@ const Page = () => {
     }
 
 
-    const [errorStatus, setErrorStatus] = useState()
+    const [errorStatus, setErrorStatus] = useState(0)
     const [post, setPost] = useState<Post>()
     const [loading, setLoading] = useState(true)
     const [isOwner, setIsOwner] = useState(false)
-
-    const [firstStart, setFirstStart] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,11 +63,9 @@ const Page = () => {
                 const post = response as GetPostResponse
                 const postData = await axios.get(post.post.body, {method: 'OPTIONS'})
                 post.post.body = postData.data
-                console.log(post.post)
                 setPost(post.post)
                 setLoading(false)
             } else if (response.code === 404) {
-                console.log(response)
                 setErrorStatus(404)
 
                 setLoading(false)
@@ -78,10 +74,8 @@ const Page = () => {
                 setLoading(false)
             }
         }
-        console.log(userState.initialized)
-        if (userState.initialized && !firstStart){
+        if (userState.initialized){
             fetchData()
-            setFirstStart(true)
         }
     }, [userState.initialized]);
     useEffect(() => {
@@ -109,11 +103,9 @@ const Page = () => {
                             private: !isOwner,
                             link: !isOwner
                         }} selectOption={post.type}/>
-
-
                         {isOwner && (
                             <>
-                                <span className={`text-h7 mx-auto font-m duration-500 h-[30px] ${success ? 'text-green-600' : errors.title || errors.body || errors.type ? 'text-red-600' : isLoading ? 'text-yellow-400 opacity-100' : ''}`}>
+                                <span className={`text-h7 mx-auto font-m duration-500 h-[30px] ${success ? 'text-green-600' : errors.body || errors.type ? 'text-red-600' : isLoading ? 'text-yellow-400 opacity-100' : ''}`}>
                                     {errors.body ? String(errors.body?.message) : errors.type ? String(errors.type?.message) : success ? 'Success update Post' : isLoading ? '' : ''}
                                 </span>
                                 <GreenMatteButton type={'submit'}

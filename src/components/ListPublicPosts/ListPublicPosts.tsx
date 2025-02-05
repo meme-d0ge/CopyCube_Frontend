@@ -35,10 +35,10 @@ const ListPublicPosts = ({limit = 10}) => {
     }
     const observer = new IntersectionObserver(
         async ([entry]) => {
-            if (entry.isIntersecting && countPosts/10 >= page - 1) {
-                await LoadPosts();
-            }
-        },
+                if (entry.isIntersecting && countPosts/10 >= page - 1) {
+                    await LoadPosts();
+                }
+            },
     );
     useEffect(() => {
         if (observerRef.current) {

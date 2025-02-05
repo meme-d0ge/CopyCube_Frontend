@@ -1,7 +1,9 @@
 'use client'
 import React from 'react';
-import ListPublicPosts from "@/components/ListPublicPosts/ListPublicPosts";
-
+import dynamic from "next/dynamic";
+const ListPublicPosts = dynamic(() => import("@/components/ListPublicPosts/ListPublicPosts"), {
+    ssr: false,
+});
 const Page = () => {
     return (
         <main className={'bg-neutral-900'}>

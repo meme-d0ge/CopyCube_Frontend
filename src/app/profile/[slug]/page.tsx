@@ -30,7 +30,9 @@ const Page = () => {
                 setLoading(false)
             }
         }
-        fethcData()
+        if (userState.initialized){
+            fethcData()
+        }
     }, [userState.initialized]);
     if (loading) {
         return (
@@ -76,9 +78,7 @@ const Page = () => {
                         <button onClick={() => {
                             setOpenList(!openList)
                         }}
-                                className={`text-lightGray hover:text-white text-[20px] cursor-pointer mx-auto relative after:absolute after:top-[25px] after:right-[50%] after:left-[50%] p-[7.5px] pb-[12.5px] ${openList ? "after:content-['↑']" : "after:content-['↓']"}`}>User's
-                            posts
-                        </button>
+                                className={`text-lightGray hover:text-white text-[20px] cursor-pointer mx-auto relative after:absolute after:top-[25px] after:right-[50%] after:left-[50%] p-[7.5px] pb-[12.5px] ${openList ? "after:content-['↑']" : "after:content-['↓']"}`}>User&#39;s posts</button>
                         {openList ? <ListPosts username={`${profile.username}`}></ListPosts> : ''}
                     </div>
                 </div>
